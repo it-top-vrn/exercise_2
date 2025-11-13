@@ -11,8 +11,8 @@ struct Date {
 };
 
 struct Person_info {
-    std::string name;
-    std::string surname;
+    std::string first_name;
+    std::string last_name;
     Date birth_date;
 };
 #pragma endregion
@@ -43,8 +43,8 @@ Person_info ParseLineIntoPersonInfo(const std::string &line, const std::string &
 
     vector_of_strings.push_back(line.substr(start));
 
-    person_info.surname = vector_of_strings[0];
-    person_info.name = vector_of_strings[1];
+    person_info.last_name = vector_of_strings[0];
+    person_info.first_name = vector_of_strings[1];
     person_info.birth_date = ParseDateIntoVector(vector_of_strings[2]);
 
     return person_info;
@@ -63,6 +63,9 @@ std::vector<Person_info> ReadFileIntoVector(const std::string &file_path, const 
             vector_of_person_info.push_back(ParseLineIntoPersonInfo(line, separator));
         }
     }
+    else {
+        std::cout << "Couldn't open file by this path" << std::endl;
+    }
 
     file.close();
 
@@ -80,8 +83,8 @@ void WriteInfoIntoJSONFile(const std::string& file_path, std::vector<Person_info
     for (Person_info& element : vector) {
         file << "  {" << std::endl;
 
-        file << R"(    "last_name": )" << R"(")" + element.surname + R"(",)" << std::endl;
-        file << R"(    "first_name": )" << R"(")" + element.name + R"(",)" << std::endl;
+        file << R"(    "last_name": )" << R"(")" + element.last_name + R"(",)" << std::endl;
+        file << R"(    "first_name": )" << R"(")" + element.first_name + R"(",)" << std::endl;
         file << R"(    "date_of_birth": {)" << std::endl;
         file << R"(      "year": )" << element.birth_date.year << "," << std::endl;
         file << R"(      "month": )" << element.birth_date.month << "," << std::endl;
